@@ -534,9 +534,14 @@ app.use((err, req, res, next) => {
 });
 
 // Start server - bind to 0.0.0.0 for Railway compatibility
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 CBTravel Proxy Server running on port ${PORT}`);
+const server = app.listen(PORT, '0.0.0.0', () => {
+  const addr = server.address();
+  console.log(`🚀 CBTravel Proxy Server running on ${addr.address}:${addr.port}`);
   console.log(`📍 Proxying: ${TARGET_URL}`);
   console.log(`🏷️  Brand: ${BRANDING.name}`);
   console.log(`🔑 Registration Code: ${BRANDING.registrationCode}`);
+});
+
+server.on('error', (err) => {
+  console.error('[Server Error]', err);
 });
