@@ -6,6 +6,14 @@ const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const path = require('path');
 
+// Catch unhandled errors
+process.on('uncaughtException', (err) => {
+  console.error('[FATAL] Uncaught Exception:', err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[FATAL] Unhandled Rejection:', reason);
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 const TARGET_URL = (process.env.TARGET_URL || 'https://cbtravel.enjoymydeals.com').replace(/\/$/, '');
@@ -517,6 +525,12 @@ app.all('*', async (req, res) => {
       });
     }
   }
+});
+
+// Global Express error handler
+app.use((err, req, res, next) => {
+  console.error('[Express Error]', err);
+  res.status(500).json({ error: 'Internal Server Error', message: err.message });
 });
 
 // Start server - bind to 0.0.0.0 for Railway compatibility
