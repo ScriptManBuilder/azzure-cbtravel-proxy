@@ -503,8 +503,8 @@ app.all('*', async (req, res) => {
   }
 });
 
-// Start server
-app.listen(PORT, () => {
+// Start server - bind to 0.0.0.0 for Railway compatibility
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 CBTravel Proxy Server running on port ${PORT}`);
   console.log(`📍 Proxying: ${TARGET_URL}`);
   console.log(`🏷️  Brand: ${BRANDING.name}`);
