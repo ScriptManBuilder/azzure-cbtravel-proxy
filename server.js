@@ -8,7 +8,10 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const TARGET_URL = process.env.TARGET_URL || 'https://cbtravel.enjoymydeals.com';
+const TARGET_URL = (process.env.TARGET_URL || 'https://cbtravel.enjoymydeals.com').replace(/\/$/, '');
+
+console.log('[Config] TARGET_URL:', TARGET_URL);
+console.log('[Config] PORT:', PORT);
 
 // Additional domains to proxy
 const PROXY_DOMAINS = {
@@ -413,7 +416,7 @@ app.all('*', async (req, res) => {
   const targetPath = req.originalUrl;
   const targetFullUrl = `${TARGET_URL}${targetPath}`;
 
-  console.log(`[Proxy] ${req.method} ${targetPath}`);
+  console.log(`[Proxy] ${req.method} ${targetFullUrl}`);
 
   try {
     // Build clean headers - only forward safe headers
