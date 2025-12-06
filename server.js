@@ -89,24 +89,43 @@ function rewriteHtml(html, baseUrl) {
         --program_color: ${BRANDING.primaryColor} !important;
       }
 
-      /* Override the site's program color variable */
-      *, *::before, *::after {
+      /* Force override program_color everywhere */
+      html, body, *, *::before, *::after {
         --program_color: ${BRANDING.primaryColor} !important;
+      }
+
+      /* Override header with radial gradient */
+      [style*="radial-gradient"],
+      [style*="program_color"],
+      .Header, .header, header,
+      [class*="Header"], [class*="header"] {
+        background: radial-gradient(circle, ${BRANDING.primaryColor} 40%, color-mix(in srgb, ${BRANDING.primaryColor} 80%, white) 100%) !important;
+      }
+
+      /* Override any blue colors directly */
+      [style*="#0066cc"], [style*="#0077cc"], [style*="#0088cc"],
+      [style*="rgb(0, 102, 204)"], [style*="rgb(0, 119, 204)"] {
+        background-color: ${BRANDING.primaryColor} !important;
       }
 
       /* Override primary colors */
       .btn-primary, .bg-primary, [class*="btn-primary"] {
-        background-color: var(--brand-primary) !important;
-        border-color: var(--brand-primary) !important;
+        background-color: ${BRANDING.primaryColor} !important;
+        border-color: ${BRANDING.primaryColor} !important;
       }
 
       .text-primary, a.text-primary {
-        color: var(--brand-primary) !important;
+        color: ${BRANDING.primaryColor} !important;
+      }
+
+      /* Links and accents */
+      a:not([class]) {
+        color: ${BRANDING.primaryColor};
       }
 
       /* Auto-fill registration code styling */
       .registration-helper {
-        background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+        background: linear-gradient(135deg, ${BRANDING.primaryColor}, ${BRANDING.secondaryColor});
         color: white;
         padding: 10px 15px;
         border-radius: 8px;
@@ -141,8 +160,21 @@ function rewriteHtml(html, baseUrl) {
         const BRANDING = {
           logoUrl: '${BRANDING.logoUrl}',
           brandName: '${BRANDING.name}',
-          registrationCode: '${BRANDING.registrationCode}'
+          registrationCode: '${BRANDING.registrationCode}',
+          primaryColor: '${BRANDING.primaryColor}',
+          secondaryColor: '${BRANDING.secondaryColor}'
         };
+
+        // Force override CSS variables
+        function overrideColors() {
+          document.documentElement.style.setProperty('--program_color', BRANDING.primaryColor, 'important');
+          document.body?.style.setProperty('--program_color', BRANDING.primaryColor, 'important');
+
+          // Find and override any inline styles with the old blue color
+          document.querySelectorAll('[style*="radial-gradient"]').forEach(el => {
+            el.style.background = 'radial-gradient(circle, ' + BRANDING.primaryColor + ' 40%, color-mix(in srgb, ' + BRANDING.primaryColor + ' 80%, white) 100%)';
+          });
+        }
 
         // List of known merchant/brand names to skip
         const MERCHANT_BRANDS = ['disney', 'amazon', 'walmart', 'target', 'costco', 'samsung',
@@ -230,6 +262,7 @@ function rewriteHtml(html, baseUrl) {
         }
 
         function applyBranding() {
+          overrideColors();
           replaceLogo();
           autoFillRegistration();
         }
