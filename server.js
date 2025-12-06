@@ -413,27 +413,31 @@ app.all('*', async (req, res) => {
   const targetPath = req.originalUrl;
   const targetFullUrl = `${TARGET_URL}${targetPath}`;
 
+  console.log(`[Proxy] ${req.method} ${targetPath}`);
+
   try {
+    // Build clean headers - only forward safe headers
+    const proxyHeaders = {
+      'host': new URL(TARGET_URL).host,
+      'user-agent': req.headers['user-agent'] || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      'accept': req.headers['accept'] || '*/*',
+      'accept-language': req.headers['accept-language'] || 'en-US,en;q=0.9',
+      'cookie': getCookiesString() || req.headers['cookie'] || '',
+      'origin': TARGET_URL,
+      'referer': TARGET_URL
+    };
+
     // Forward the request to target
     const axiosConfig = {
       method: req.method,
       url: targetFullUrl,
-      headers: {
-        ...req.headers,
-        host: new URL(TARGET_URL).host,
-        origin: TARGET_URL,
-        referer: TARGET_URL,
-        cookie: getCookiesString()
-      },
+      headers: proxyHeaders,
       data: req.method !== 'GET' ? req.body : undefined,
       responseType: 'arraybuffer',
       maxRedirects: 0,
+      timeout: 30000,
       validateStatus: status => status < 400 || status === 302 || status === 301
     };
-
-    // Remove headers that shouldn't be forwarded
-    delete axiosConfig.headers['accept-encoding'];
-    delete axiosConfig.headers['content-length'];
 
     const response = await axios(axiosConfig);
 
@@ -493,16 +497,20 @@ app.all('*', async (req, res) => {
     res.status(response.status).send(content);
 
   } catch (error) {
-    console.error('Proxy error:', error.message);
+    console.error(`[Proxy Error] ${targetPath}:`, error.message);
+    if (error.code) console.error(`[Proxy Error] Code:`, error.code);
 
     if (error.response) {
       // Forward error response from target
+      console.error(`[Proxy Error] Status:`, error.response.status);
       res.status(error.response.status).send(error.response.data);
     } else {
-      res.status(500).json({
+      res.status(502).json({
         error: 'Proxy Error',
         message: 'Failed to fetch from target server',
-        details: error.message
+        details: error.message,
+        code: error.code,
+        target: targetFullUrl
       });
     }
   }
