@@ -197,7 +197,7 @@ function rewriteHtml(html, baseUrl) {
         function replaceLogo() {
           console.log('[Serenity] replaceLogo running');
 
-          // ONLY target the specific header logo class used by this site
+          // Desktop header logo
           const headerLogos = document.querySelectorAll('img.Header-main_logo');
           console.log('[Serenity] Found ' + headerLogos.length + ' header logos by class');
 
@@ -208,6 +208,19 @@ function rewriteHtml(html, baseUrl) {
             img.dataset.serenityReplaced = 'true';
             if (img.srcset) img.srcset = BRANDING.logoUrl;
             console.log('[Serenity] Replaced with:', BRANDING.logoUrl);
+          });
+
+          // Mobile header logo (inside MMRHeader button)
+          const mobileLogos = document.querySelectorAll('.App-header .MMRHeader button img, .MMRHeader img');
+          mobileLogos.forEach(img => {
+            if (img.dataset.serenityReplaced || img.src.includes('/assets/')) return;
+            const src = (img.src || '').toLowerCase();
+            // Only replace if it's from accessdevelopment.com (platform logo)
+            if (src.includes('accessdevelopment.com') || src.includes('program/logo')) {
+              img.src = BRANDING.logoUrl;
+              img.dataset.serenityReplaced = 'true';
+              console.log('[Serenity] Replaced mobile logo');
+            }
           });
 
           // On redirect pages, replace the Access platform logo (first box)
