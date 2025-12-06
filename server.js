@@ -86,6 +86,12 @@ function rewriteHtml(html, baseUrl) {
       :root {
         --brand-primary: ${BRANDING.primaryColor};
         --brand-secondary: ${BRANDING.secondaryColor};
+        --program_color: ${BRANDING.primaryColor} !important;
+      }
+
+      /* Override the site's program color variable */
+      *, *::before, *::after {
+        --program_color: ${BRANDING.primaryColor} !important;
       }
 
       /* Override primary colors */
