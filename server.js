@@ -94,11 +94,8 @@ function rewriteHtml(html, baseUrl) {
         --program_color: ${BRANDING.primaryColor} !important;
       }
 
-      /* Override header with radial gradient */
-      [style*="radial-gradient"],
-      [style*="program_color"],
-      .Header, .header, header,
-      [class*="Header"], [class*="header"] {
+      /* Override only elements that use program_color in their background gradient */
+      [style*="program_color"][style*="radial-gradient"] {
         background: radial-gradient(circle, ${BRANDING.primaryColor} 40%, color-mix(in srgb, ${BRANDING.primaryColor} 80%, white) 100%) !important;
       }
 
@@ -170,9 +167,12 @@ function rewriteHtml(html, baseUrl) {
           document.documentElement.style.setProperty('--program_color', BRANDING.primaryColor, 'important');
           document.body?.style.setProperty('--program_color', BRANDING.primaryColor, 'important');
 
-          // Find and override any inline styles with the old blue color
-          document.querySelectorAll('[style*="radial-gradient"]').forEach(el => {
-            el.style.background = 'radial-gradient(circle, ' + BRANDING.primaryColor + ' 40%, color-mix(in srgb, ' + BRANDING.primaryColor + ' 80%, white) 100%)';
+          // Find and override only elements with program_color gradient (not white backgrounds)
+          document.querySelectorAll('[style]').forEach(el => {
+            const style = el.getAttribute('style') || '';
+            if (style.includes('program_color') && style.includes('radial-gradient')) {
+              el.style.background = 'radial-gradient(circle, ' + BRANDING.primaryColor + ' 40%, color-mix(in srgb, ' + BRANDING.primaryColor + ' 80%, white) 100%)';
+            }
           });
         }
 
