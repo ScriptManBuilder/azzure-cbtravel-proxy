@@ -36,6 +36,11 @@ app.use(express.json());
 // Serve static assets (for custom branding)
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+// Health check endpoint for Railway
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // Store cookies from target site
 let targetCookies = {};
 
