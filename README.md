@@ -34,10 +34,10 @@ Server runs at `http://localhost:3000`
 |----------|-------------|---------|
 | `PORT` | Server port | `3000` |
 | `TARGET_URL` | Target website URL | `https://cbtravel.enjoymydeals.com` |
-| `BRAND_NAME` | Your brand name | `Serenity Travel` |
+| `SITE_TYPE` | Site type (1=Lifestyle, 2=Retail, 3=Health, 4=Family) | `1` |
+| `BRAND_NAME` | Your brand name | `Serenity` |
+| `BRAND_COLOR` | Brand color | `#6366f1` |
 | `BRAND_LOGO_URL` | Path to logo | `/assets/logo.png` |
-| `BRAND_PRIMARY_COLOR` | Primary brand color | `#6366f1` |
-| `BRAND_SECONDARY_COLOR` | Secondary brand color | `#4f46e5` |
 | `BRAND_FAVICON_URL` | Path to favicon | `/assets/favicon.ico` |
 | `REGISTRATION_CODE` | Auto-fill registration code | `accessvip25` |
 
@@ -45,7 +45,7 @@ Server runs at `http://localhost:3000`
 
 1. Add your logo to `/assets/logo.png`
 2. Add your favicon to `/assets/favicon.ico`
-3. Update environment variables with your brand colors
+3. Update environment variables with your brand color
 
 ## Railway Setup
 
@@ -54,8 +54,8 @@ Set these environment variables in Railway:
 ```
 PORT=3000
 TARGET_URL=https://cbtravel.enjoymydeals.com
+SITE_TYPE=1
 BRAND_NAME=Your Brand Name
-BRAND_PRIMARY_COLOR=#your-color
-BRAND_SECONDARY_COLOR=#your-color
+BRAND_COLOR=#your-color
 REGISTRATION_CODE=accessvip25
 ```
