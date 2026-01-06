@@ -9,7 +9,7 @@ module.exports = {
     name: 'Privexa',
     siteType: 1, // VIP / Lifestyle
     url: 'azzurevipperks.com',
-    phone: '+1-XXX-XXX-XXXX',
+    phone: '+16592446369',
     logo: 'logos/privexa.svg',
     color: '#1E3A5F'
 
@@ -19,7 +19,7 @@ module.exports = {
     name: 'Aeronix',
     siteType: 2, // Travel
     url: 'azzuretravelsavings.com',
-    phone: '+1-XXX-XXX-XXXX',
+    phone: '+16592446373',
     logo: 'logos/aeronix.svg',
     color: '#312E81'
 
@@ -29,7 +29,7 @@ module.exports = {
     name: 'Dealvix',
     siteType: 3, // Retail
     url: 'azzureretaildiscounts.com',
-    phone: '+1-XXX-XXX-XXXX',
+    phone: '+16592446375',
     logo: 'logos/dealvix.svg',
     color: '#047857'
 
@@ -39,7 +39,7 @@ module.exports = {
     name: 'Wellvix',
     siteType: 4, // Health
     url: 'azzurehealthperks.com',
-    phone: '+1-XXX-XXX-XXXX',
+    phone: '+16592446379',
     logo: 'logos/wellvix.svg',
     color: '#EA580C'
 
@@ -49,7 +49,7 @@ module.exports = {
     name: 'Nestivo',
     siteType: 5, // Family
     url: 'azzurefamilyperks.com',
-    phone: '+1-XXX-XXX-XXXX',
+    phone: '+16592446374',
     logo: 'logos/nestivo.svg',
     color: '#7F1D1D'
 
