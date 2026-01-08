@@ -32,7 +32,7 @@ function getPhoneReplacementCode(newPhone) {
 
           // Check for phone links
           if (element.tagName === 'A' && element.href.startsWith('tel:')) {
-            element.href = 'tel:' + '${newPhone}'.replace(/[^0-9+]/g, '');
+            element.href = 'tel:${newPhone.replace(/[^0-9+]/g, '')}';
             element.textContent = '${newPhone}';
             element.dataset.serenityPhoneReplaced = 'true';
             console.log('[Serenity] Phone link replaced:', selector);
@@ -74,7 +74,6 @@ function getPhoneReplacementCode(newPhone) {
           const text = node.textContent.trim();
           if (text.match(/^\\+?[\\d\\s\\(\\)\\-]+$/) && text.length > 7) {
             node.textContent = '${newPhone}';
-            console.log('[Serenity] Phone replaced (fallback)');
             return true;
           }
         }
