@@ -80,7 +80,6 @@ function getPhoneReplacementCode(newPhone) {
         }
       }
 
-      console.log('[Serenity] Phone element not found, will retry...');
       return false;
     }
   `;
