@@ -60,5 +60,7 @@ console.log('[Config] Brand ID:', brandId);
 console.log('[Config] Site Name:', config.siteName);
 console.log('[Config] Site Type:', config.siteType);
 console.log('[Config] Brand Color:', config.brandColor);
+console.log('[Config] Brand Phone:', config.brandPhone);
+console.log('[Config] Brand from brands.js:', brand.phone);
 
 module.exports = config;
