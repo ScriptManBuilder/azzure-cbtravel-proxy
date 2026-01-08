@@ -41,6 +41,42 @@ function rewriteHtml(html, requestUrl = '') {
   // Update title to brand name only
   $('title').text(config.siteName);
 
+  // CRITICAL: Replace phone numbers in HTML before sending to client
+  // This catches phone numbers that come from the target site's HTML
+  const phonePatterns = [
+    /\+1-XXX-XXX-XXXX/g,
+    /\+1\s*\(XXX\)\s*XXX-XXXX/g,
+    /XXX-XXX-XXXX/g,
+    /\+1\s*\(800\)\s*331-8867/g,
+    config.originalPhone ? new RegExp(config.originalPhone.replace(/[+\-\(\)\s]/g, '\\$&'), 'g') : null
+  ].filter(Boolean);
+
+  // Replace phone in text nodes and attributes
+  $('*').each((_, el) => {
+    const $el = $(el);
+    
+    // Replace in text content (but skip script and style tags)
+    if (el.type === 'text' && el.parent && !['script', 'style'].includes(el.parent.name)) {
+      let text = $el.text();
+      phonePatterns.forEach(pattern => {
+        if (pattern.test(text)) {
+          text = text.replace(pattern, config.brandPhone);
+        }
+      });
+      $el.replaceWith(text);
+    }
+
+    // Replace in href attributes (tel: links)
+    if ($el.attr('href') && $el.attr('href').startsWith('tel:')) {
+      phonePatterns.forEach(pattern => {
+        let href = $el.attr('href');
+        if (pattern.test(href)) {
+          $el.attr('href', 'tel:' + config.brandPhone.replace(/[^0-9+]/g, ''));
+        }
+      });
+    }
+  });
+
   // Inject branding script
   const brandingScript = generateBrandingScript();
   $('head').append(`<script id="serenity-branding-script">${brandingScript}</script>`);
