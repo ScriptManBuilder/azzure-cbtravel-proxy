@@ -217,33 +217,18 @@ function generateBrandingScript() {
       // MutationObserver for dynamic content
       function startObserver() {
         if (document.body) {
-          const observer = new MutationObserver(() => {
-            applyBranding();
-            // Extra aggressive phone replacement for dynamic content
-            replacePhoneNumber();
-          });
+          const observer = new MutationObserver(applyBranding);
           observer.observe(document.body, {
             childList: true,
             subtree: true,
             attributes: true,
-            attributeFilter: ['src', 'srcset'],
-            characterData: true  // Also watch for text changes
+            attributeFilter: ['src', 'srcset']
           });
         } else {
           setTimeout(startObserver, 50);
         }
       }
       startObserver();
-
-      // Extra aggressive phone replacement - run every 2 seconds for first minute
-      let phoneCheckCount = 0;
-      const phoneInterval = setInterval(() => {
-        replacePhoneNumber();
-        phoneCheckCount++;
-        if (phoneCheckCount > 30) {  // Stop after 60 seconds
-          clearInterval(phoneInterval);
-        }
-      }, 2000);
     })();
   `;
 }

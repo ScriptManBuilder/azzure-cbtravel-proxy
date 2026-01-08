@@ -41,52 +41,35 @@ function rewriteHtml(html, requestUrl = '') {
   // Update title to brand name only
   $('title').text(config.siteName);
 
-  // CRITICAL: Replace phone numbers in HTML before sending to client
-  // Get entire HTML as string and replace phone patterns
-  let htmlString = $.html();
-  
-  const phoneReplacements = [
-    [/\+1-XXX-XXX-XXXX/g, config.brandPhone],
-    [/\+1\s*\(XXX\)\s*XXX-XXXX/g, config.brandPhone],
-    [/XXX-XXX-XXXX/g, config.brandPhone]
-  ];
-
-  phoneReplacements.forEach(([pattern, replacement]) => {
-    htmlString = htmlString.replace(pattern, replacement);
-  });
-
-  // Reload the modified HTML back into Cheerio
-  const $modified = cheerio.load(htmlString);
-
   // Inject branding script
   const brandingScript = generateBrandingScript();
-  $modified('head').append(`<script id="serenity-branding-script">${brandingScript}</script>`);
+  $('head').append(`<script id="serenity-branding-script">${brandingScript}</script>`);
 
   // Rewrite all absolute URLs to go through proxy
-  $modified('a[href]').each((_, el) => {
-    let href = $modified(el).attr('href');
+  $('a[href]').each((_, el) => {
+    let href = $(el).attr('href');
     if (href && href.startsWith(config.targetUrl)) {
-      $modified(el).attr('href', href.replace(config.targetUrl, ''));
+      $(el).attr('href', href.replace(config.targetUrl, ''));
     }
   });
 
-  $modified('form[action]').each((_, el) => {
-    let action = $modified(el).attr('action');
+  $('form[action]').each((_, el) => {
+    let action = $(el).attr('action');
     if (action && action.startsWith(config.targetUrl)) {
-      $modified(el).attr('action', action.replace(config.targetUrl, ''));
+      $(el).attr('action', action.replace(config.targetUrl, ''));
     }
   });
 
   // Rewrite image and resource URLs
-  $modified('img[src], script[src], link[href], iframe[src]').each((_, el) => {
+  $('img[src], script[src], link[href], iframe[src]').each((_, el) => {
     const attr = el.tagName === 'link' ? 'href' : 'src';
-    let value = $modified(el).attr(attr);
+    let value = $(el).attr(attr);
     if (value && value.startsWith(config.targetUrl)) {
-      $modified(el).attr(attr, value.replace(config.targetUrl, ''));
+      $(el).attr(attr, value.replace(config.targetUrl, ''));
     }
   });
 
-  return $modified.html();
+  return $.html();
 }
 
 module.exports = { rewriteHtml };
