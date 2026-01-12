@@ -109,6 +109,59 @@ module.exports = {
     color:  '#7F1D1D'
 
   },
+   // ------------------------------------------------------------------------
+   10: {
+    id: 10,
+    name: 'Illuvia',
+    siteType: 11, // 
+    url: 'illumivipperks.com',
+    phone: '+19792026746',
+    logo: 'logos/Illuvia.svg',
+    color: '#1E3A5F'
+  },
+
+  11: {
+    id: 11,
+    name: 'Voylume',
+    siteType: 12, // Travel
+    url: 'illumitravelsavings.com',
+    phone: '+19792028194',
+    logo: 'logos/voylume.svg',
+    color: '#312E81'
+  },
+
+  12: {
+    id: 12,
+    name: 'Retalyx',
+    siteType: 13, // Retail
+    url: 'illumiretaildiscounts.com',
+    phone: '+19792271667',
+    logo: 'logos/retalyx.svg',
+    color: '#047857'
+
+  },
+
+ 13: {
+    id: 13,
+    name: 'Welluxa',
+    siteType: 14, // Family
+    url: 'illumihealthperks.com',
+    phone: '+13362836432',
+    logo: 'logos/welluxa.svg',
+    color: '#EA580C'
+
+  },
+
+   14: {
+    id: 14,
+    name: 'Homira',
+    siteType: 15, // Family
+    url: 'illumifamilyperks.com',
+    phone: '+19792026800',
+    logo: 'logos/homira.svg',
+    color:  '#7F1D1D'
+
+  },
 
 
 
