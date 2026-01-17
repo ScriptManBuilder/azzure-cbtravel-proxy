@@ -109,7 +109,7 @@ module.exports = {
     color:  '#7F1D1D'
 
   },
-   // ------------------------------------------------------------------------
+   // ------------------------------------------------------------------------ Illuvia id = 10
    10: {
     id: 10,
     name: 'Illuvia',
@@ -162,7 +162,113 @@ module.exports = {
     color:  '#7F1D1D'
 
   },
+// ------------------------------------------------------------------------  (31-35)    15
+15: {
+    id: 15,
+    name: 'Zenvera',
+    siteType: 16, // 
+    url: 'zendexvipperks.com',
+    phone: '+19792028074',
+    logo: 'logos/zenvera.svg',
+    color: '#1E3A5F'
+  },
 
+  16: {
+    id: 16,
+    name: 'Travixio',
+    siteType: 17, // Travel
+    url: 'zendextravelsavings.com',
+    phone: '+19792028866',
+    logo: 'logos/travixio.svg',
+    color: '#312E81'
+  },
+
+  17: {
+    id: 17,
+    name: 'Shopvera',
+    siteType: 18, // Retail
+    url: 'zendexretaildiscounts.com',
+    phone: '+19792028090',
+    logo: 'logos/shopvera.svg',
+    color: '#047857'
+
+  },
+
+ 18: {
+    id: 18,
+    name: 'Vitalen',
+    siteType: 19, // Family
+    url: 'zendexhealthperks.com',
+    phone: '+19792325818',
+    logo: 'logos/vitalen.svg',
+    color: '#EA580C'
+
+  },
+
+   19: {
+    id: 19,
+    name: 'Famelyx',
+    siteType: 20, // Family
+    url: 'zendexfamilyperks.com',
+    phone: '+19792325317',
+    logo: 'logos/famelyx.svg',
+    color:  '#7F1D1D'
+
+  },
+// ------------------------------------------------------------------------  (36-40)    20
+
+20: {
+    id: 20,
+    name: 'Luxivio',
+    siteType: 21, // 
+    url: 'spvipperks.com',
+    phone: '+16823126857',
+    logo: 'logos/luxivio.svg',
+    color: '#1E3A5F'
+  },
+
+  21: {
+    id: 21,
+    name: 'Travixo',
+    siteType: 22, // Travel
+    url: 'sptravelsavings.com',
+    phone: '+15205980488',
+    logo: 'logos/travixo.svg',
+    color: '#312E81'
+  },
+
+  22: {
+    id: 22,
+    name: 'Shopvex',
+    siteType: 23, // Retail
+    url: 'spretaildiscounts.com',
+    phone: '+18727621485',
+    logo: 'logos/shopvex.svg',
+    color: '#047857'
+
+  },
+
+  23: {
+    id: 23,
+    name: 'Wellaro',
+    siteType: 24, // Family
+    url: 'sphealthperks.com',
+    phone: '+14843068266',
+    logo: 'logos/wellaro.svg',
+    color: '#EA580C'
+
+  },
+
+   24: {
+    id: 24,
+    name: 'Famory',
+    siteType: 25, // Family
+    url: 'spfamilyperks.com',
+    phone: '+12394230244',
+    logo: 'logos/famory.svg',
+    color:  '#7F1D1D'
+
+  },
 
 
 
